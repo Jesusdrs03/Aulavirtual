@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 01-05-2025 a las 00:33:53
+-- Tiempo de generación: 26-05-2025 a las 05:56:40
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -24,15 +24,15 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `actividad`
+-- Estructura de tabla para la tabla `actividades`
 --
 
-CREATE TABLE `actividad` (
+CREATE TABLE `actividades` (
   `id_actividad` int(11) NOT NULL,
   `id_curso` int(11) NOT NULL,
   `id_materia` int(11) NOT NULL,
   `nombre` varchar(250) NOT NULL,
-  `ponderacion` float NOT NULL,
+  `valor` int(2) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -43,14 +43,17 @@ CREATE TABLE `actividad` (
 --
 
 CREATE TABLE `admin` (
-  `id_administrador` int(11) NOT NULL,
+  `id_admin` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `nombre1` varchar(150) NOT NULL,
   `nombre2` varchar(150) NOT NULL,
   `apellido1` varchar(180) NOT NULL,
   `apellido2` varchar(180) NOT NULL,
   `correo` varchar(250) NOT NULL,
-  `password` varchar(8) NOT NULL,
+  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','cual fue tu primera mascota','en que ciudad se conocieron tus padres') NOT NULL,
+  `rp1` varchar(100) NOT NULL,
+  `p2` enum('que lugar te gustaria conocer','cual fue tu primer vehiculo','cual es tu pasatiempo favorito','cual es tu pelicula favorita') NOT NULL,
+  `rp2` varchar(100) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -574,14 +577,28 @@ INSERT INTO `ciudades` (`id_ciudad`, `id_estado`, `ciudad`, `capital`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `comentario`
+-- Estructura de tabla para la tabla `comentarios`
 --
 
-CREATE TABLE `comentario` (
+CREATE TABLE `comentarios` (
   `id_comentario` int(11) NOT NULL,
   `id_docente` int(11) NOT NULL,
   `id_estudiante` int(11) NOT NULL,
+  `fecha` date NOT NULL,
   `descripcion` varchar(250) NOT NULL,
+  `status` enum('activo','inactivo') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `comprobantes`
+--
+
+CREATE TABLE `comprobantes` (
+  `id_comprobante` int(11) NOT NULL,
+  `id_estudiante` int(11) NOT NULL,
+  `id_nota` int(11) NOT NULL,
   `fecha` date NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -589,31 +606,17 @@ CREATE TABLE `comentario` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `comprobante`
+-- Estructura de tabla para la tabla `cursos`
 --
 
-CREATE TABLE `comprobante` (
-  `id_comprobante` int(11) NOT NULL,
-  `id_nota` int(11) NOT NULL,
-  `fecha` date NOT NULL,
-  `status` enum('activo','inactivo') NOT NULL,
-  `id_estudiante` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `curso`
---
-
-CREATE TABLE `curso` (
+CREATE TABLE `cursos` (
   `id_curso` int(11) NOT NULL,
   `id_docente` int(11) NOT NULL,
   `id_estudiante` int(11) NOT NULL,
   `id_periodo` int(11) NOT NULL,
-  `nombre` varchar(80) NOT NULL,
+  `nombre` varchar(100) NOT NULL,
   `codigo` varchar(20) NOT NULL,
-  `status` enum('Activo','inactivo') NOT NULL
+  `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -624,34 +627,21 @@ CREATE TABLE `curso` (
 
 CREATE TABLE `direcciones` (
   `id_direccion` int(11) NOT NULL,
+  `id_estado` int(11) NOT NULL,
+  `id_municipio` int(11) NOT NULL,
   `id_ciudad` int(11) NOT NULL,
   `id_parroquia` int(11) NOT NULL,
-  `id_estado` int(11) NOT NULL,
-  `id_estudiante` int(11) NOT NULL,
-  `direccion` varchar(250) NOT NULL,
+  `descripcion` varchar(250) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `direcciones_estudiante`
+-- Estructura de tabla para la tabla `docentes`
 --
 
-CREATE TABLE `direcciones_estudiante` (
-  `id_direcciones_estudiante` int(11) NOT NULL,
-  `id_direccion` int(11) NOT NULL,
-  `id_estudiante` int(11) NOT NULL,
-  `status` enum('activo','inactivo') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `docente`
---
-
-CREATE TABLE `docente` (
+CREATE TABLE `docentes` (
   `id_docente` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `nombre1` varchar(150) NOT NULL,
@@ -659,7 +649,10 @@ CREATE TABLE `docente` (
   `apellido1` varchar(180) NOT NULL,
   `apellido2` varchar(180) NOT NULL,
   `correo` varchar(250) NOT NULL,
-  `password` varchar(8) NOT NULL,
+  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','cual fue tu primera mascota','en que ciudad se conocieron tus padres') NOT NULL,
+  `rp1` varchar(100) NOT NULL,
+  `p2` enum('que lugar te gustaria conocer','cual fue tu primer vehiculo','cual es tu pasatiempo favorito','cual es tu pelicula favorita') NOT NULL,
+  `rp2` varchar(100) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -709,10 +702,10 @@ INSERT INTO `estados` (`id_estado`, `estado`, `iso_3166-2`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `estudiante`
+-- Estructura de tabla para la tabla `estudiantes`
 --
 
-CREATE TABLE `estudiante` (
+CREATE TABLE `estudiantes` (
   `id_estudiante` int(11) NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `id_direccion` int(11) NOT NULL,
@@ -720,26 +713,29 @@ CREATE TABLE `estudiante` (
   `nombre2` varchar(150) NOT NULL,
   `apellido1` varchar(180) NOT NULL,
   `apellido2` varchar(180) NOT NULL,
-  `fecha_nacimiento` date NOT NULL,
   `sexo` enum('masculino','femenino') NOT NULL,
-  `direccion` varchar(250) NOT NULL,
+  `fecha_nacimiento` date NOT NULL,
+  `numero_documento` varchar(8) NOT NULL,
   `correo` varchar(250) NOT NULL,
-  `password` varchar(8) NOT NULL,
+  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','cual fue tu primera mascota','en que ciudad se conocieron tus padres') NOT NULL,
+  `rp1` varchar(250) NOT NULL,
+  `p2` enum('que lugar te gustaria conocer','cual fue tu primer vehiculo','cual es tu pasatiempo favorito','cual es tu peliculafavorita') NOT NULL,
+  `rp2` varchar(250) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `materia`
+-- Estructura de tabla para la tabla `materias`
 --
 
-CREATE TABLE `materia` (
+CREATE TABLE `materias` (
   `id_materia` int(11) NOT NULL,
-  `id_periodo` int(11) NOT NULL,
   `id_estudiante` int(11) NOT NULL,
   `id_docente` int(11) NOT NULL,
-  `nombre` varchar(80) NOT NULL,
+  `id_periodo` int(11) NOT NULL,
+  `nombre` varchar(250) NOT NULL,
   `codigo` varchar(20) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -1100,16 +1096,16 @@ INSERT INTO `municipios` (`id_municipio`, `id_estado`, `municipio`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `nota`
+-- Estructura de tabla para la tabla `notas`
 --
 
-CREATE TABLE `nota` (
+CREATE TABLE `notas` (
   `id_nota` int(11) NOT NULL,
-  `id_estudiante` int(11) NOT NULL,
+  `id_estudiantes` int(11) NOT NULL,
   `id_curso` int(11) NOT NULL,
   `id_materia` int(11) NOT NULL,
   `id_actividad` int(11) NOT NULL,
-  `valor` float NOT NULL,
+  `valor` int(2) NOT NULL,
   `fecha` date NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -2273,28 +2269,28 @@ INSERT INTO `parroquias` (`id_parroquia`, `id_municipio`, `parroquia`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `periodo`
+-- Estructura de tabla para la tabla `periodos`
 --
 
-CREATE TABLE `periodo` (
+CREATE TABLE `periodos` (
   `id_periodo` int(11) NOT NULL,
   `inicio` date NOT NULL,
-  `fin` date NOT NULL,
-  `descripcion` varchar(250) NOT NULL,
+  `fin` int(11) NOT NULL,
+  `descripcion` int(250) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `seccion`
+-- Estructura de tabla para la tabla `secciones`
 --
 
-CREATE TABLE `seccion` (
+CREATE TABLE `secciones` (
   `id_seccion` int(11) NOT NULL,
+  `id_estudiante` int(11) NOT NULL,
   `id_materia` int(11) NOT NULL,
   `id_curso` int(11) NOT NULL,
-  `id_estudiante` int(11) NOT NULL,
   `codigo` varchar(20) NOT NULL,
   `nombre` varchar(80) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
@@ -2303,16 +2299,20 @@ CREATE TABLE `seccion` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `usuario`
+-- Estructura de tabla para la tabla `usuarios`
 --
 
-CREATE TABLE `usuario` (
+CREATE TABLE `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `usuario` varchar(16) NOT NULL,
-  `password` varchar(8) NOT NULL,
+  `password` varchar(34) NOT NULL,
   `correo` varchar(250) NOT NULL,
-  `nivel` enum('estudiante','administrador','docente','') NOT NULL,
-  `status` enum('activo','inactivo','','') NOT NULL
+  `nivel` enum('estudiante','docente','admin') NOT NULL,
+  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','cual fue tu primera mascota','en que ciudad se conocieron tus padres') NOT NULL,
+  `rp1` varchar(100) NOT NULL,
+  `p2` enum('que lugar te gustaria conocer','cual fue tu primer vehiculo','cual es tu pasatiempo favorito','cual es tu pelicula favorita') NOT NULL,
+  `rp2` varchar(100) NOT NULL,
+  `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -2320,9 +2320,9 @@ CREATE TABLE `usuario` (
 --
 
 --
--- Indices de la tabla `actividad`
+-- Indices de la tabla `actividades`
 --
-ALTER TABLE `actividad`
+ALTER TABLE `actividades`
   ADD PRIMARY KEY (`id_actividad`),
   ADD KEY `id_curso` (`id_curso`),
   ADD KEY `id_materia` (`id_materia`);
@@ -2331,7 +2331,7 @@ ALTER TABLE `actividad`
 -- Indices de la tabla `admin`
 --
 ALTER TABLE `admin`
-  ADD PRIMARY KEY (`id_administrador`),
+  ADD PRIMARY KEY (`id_admin`),
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
@@ -2342,25 +2342,25 @@ ALTER TABLE `ciudades`
   ADD KEY `id_estado` (`id_estado`);
 
 --
--- Indices de la tabla `comentario`
+-- Indices de la tabla `comentarios`
 --
-ALTER TABLE `comentario`
+ALTER TABLE `comentarios`
   ADD PRIMARY KEY (`id_comentario`),
-  ADD UNIQUE KEY `id_docente` (`id_docente`),
+  ADD KEY `id_docente` (`id_docente`),
   ADD KEY `id_estudiante` (`id_estudiante`);
 
 --
--- Indices de la tabla `comprobante`
+-- Indices de la tabla `comprobantes`
 --
-ALTER TABLE `comprobante`
+ALTER TABLE `comprobantes`
   ADD PRIMARY KEY (`id_comprobante`),
-  ADD KEY `id_nota` (`id_nota`),
-  ADD KEY `id_estudiante` (`id_estudiante`);
+  ADD KEY `id_estudiante` (`id_estudiante`),
+  ADD KEY `id_nota` (`id_nota`);
 
 --
--- Indices de la tabla `curso`
+-- Indices de la tabla `cursos`
 --
-ALTER TABLE `curso`
+ALTER TABLE `cursos`
   ADD PRIMARY KEY (`id_curso`),
   ADD KEY `id_docente` (`id_docente`),
   ADD KEY `id_estudiante` (`id_estudiante`),
@@ -2371,23 +2371,15 @@ ALTER TABLE `curso`
 --
 ALTER TABLE `direcciones`
   ADD PRIMARY KEY (`id_direccion`),
-  ADD KEY `id_ciudad` (`id_ciudad`),
-  ADD KEY `id_parroquia` (`id_parroquia`),
   ADD KEY `id_estado` (`id_estado`),
-  ADD KEY `id_estudiante` (`id_estudiante`);
+  ADD KEY `id_municipio` (`id_municipio`),
+  ADD KEY `id_ciudad` (`id_ciudad`),
+  ADD KEY `id_parroquia` (`id_parroquia`);
 
 --
--- Indices de la tabla `direcciones_estudiante`
+-- Indices de la tabla `docentes`
 --
-ALTER TABLE `direcciones_estudiante`
-  ADD PRIMARY KEY (`id_direcciones_estudiante`),
-  ADD KEY `id_direccion` (`id_direccion`),
-  ADD KEY `id_estudiante` (`id_estudiante`);
-
---
--- Indices de la tabla `docente`
---
-ALTER TABLE `docente`
+ALTER TABLE `docentes`
   ADD PRIMARY KEY (`id_docente`),
   ADD KEY `id_usuario` (`id_usuario`);
 
@@ -2398,21 +2390,21 @@ ALTER TABLE `estados`
   ADD PRIMARY KEY (`id_estado`);
 
 --
--- Indices de la tabla `estudiante`
+-- Indices de la tabla `estudiantes`
 --
-ALTER TABLE `estudiante`
+ALTER TABLE `estudiantes`
   ADD PRIMARY KEY (`id_estudiante`),
   ADD KEY `id_usuario` (`id_usuario`),
   ADD KEY `id_direccion` (`id_direccion`);
 
 --
--- Indices de la tabla `materia`
+-- Indices de la tabla `materias`
 --
-ALTER TABLE `materia`
+ALTER TABLE `materias`
   ADD PRIMARY KEY (`id_materia`),
-  ADD KEY `id_periodo` (`id_periodo`),
   ADD KEY `id_estudiante` (`id_estudiante`),
-  ADD KEY `id_docente` (`id_docente`);
+  ADD KEY `id_docente` (`id_docente`),
+  ADD KEY `id_periodo` (`id_periodo`);
 
 --
 -- Indices de la tabla `municipios`
@@ -2422,11 +2414,11 @@ ALTER TABLE `municipios`
   ADD KEY `id_estado` (`id_estado`);
 
 --
--- Indices de la tabla `nota`
+-- Indices de la tabla `notas`
 --
-ALTER TABLE `nota`
+ALTER TABLE `notas`
   ADD PRIMARY KEY (`id_nota`),
-  ADD KEY `id_estudiante` (`id_estudiante`),
+  ADD KEY `id_estudiantes` (`id_estudiantes`),
   ADD KEY `id_curso` (`id_curso`),
   ADD KEY `id_materia` (`id_materia`),
   ADD KEY `id_actividad` (`id_actividad`);
@@ -2439,24 +2431,24 @@ ALTER TABLE `parroquias`
   ADD KEY `id_municipio` (`id_municipio`);
 
 --
--- Indices de la tabla `periodo`
+-- Indices de la tabla `periodos`
 --
-ALTER TABLE `periodo`
+ALTER TABLE `periodos`
   ADD PRIMARY KEY (`id_periodo`);
 
 --
--- Indices de la tabla `seccion`
+-- Indices de la tabla `secciones`
 --
-ALTER TABLE `seccion`
+ALTER TABLE `secciones`
   ADD PRIMARY KEY (`id_seccion`),
+  ADD KEY `id_estudiante` (`id_estudiante`),
   ADD KEY `id_materia` (`id_materia`),
-  ADD KEY `id_curso` (`id_curso`),
-  ADD KEY `id_estudiante` (`id_estudiante`);
+  ADD KEY `id_curso` (`id_curso`);
 
 --
--- Indices de la tabla `usuario`
+-- Indices de la tabla `usuarios`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id_usuario`);
 
 --
@@ -2464,16 +2456,16 @@ ALTER TABLE `usuario`
 --
 
 --
--- AUTO_INCREMENT de la tabla `actividad`
+-- AUTO_INCREMENT de la tabla `actividades`
 --
-ALTER TABLE `actividad`
+ALTER TABLE `actividades`
   MODIFY `id_actividad` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_administrador` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT de la tabla `ciudades`
@@ -2482,21 +2474,21 @@ ALTER TABLE `ciudades`
   MODIFY `id_ciudad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=523;
 
 --
--- AUTO_INCREMENT de la tabla `comentario`
+-- AUTO_INCREMENT de la tabla `comentarios`
 --
-ALTER TABLE `comentario`
+ALTER TABLE `comentarios`
   MODIFY `id_comentario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `comprobante`
+-- AUTO_INCREMENT de la tabla `comprobantes`
 --
-ALTER TABLE `comprobante`
+ALTER TABLE `comprobantes`
   MODIFY `id_comprobante` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `curso`
+-- AUTO_INCREMENT de la tabla `cursos`
 --
-ALTER TABLE `curso`
+ALTER TABLE `cursos`
   MODIFY `id_curso` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -2506,15 +2498,9 @@ ALTER TABLE `direcciones`
   MODIFY `id_direccion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `direcciones_estudiante`
+-- AUTO_INCREMENT de la tabla `docentes`
 --
-ALTER TABLE `direcciones_estudiante`
-  MODIFY `id_direcciones_estudiante` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT de la tabla `docente`
---
-ALTER TABLE `docente`
+ALTER TABLE `docentes`
   MODIFY `id_docente` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -2524,15 +2510,15 @@ ALTER TABLE `estados`
   MODIFY `id_estado` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
--- AUTO_INCREMENT de la tabla `estudiante`
+-- AUTO_INCREMENT de la tabla `estudiantes`
 --
-ALTER TABLE `estudiante`
+ALTER TABLE `estudiantes`
   MODIFY `id_estudiante` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `materia`
+-- AUTO_INCREMENT de la tabla `materias`
 --
-ALTER TABLE `materia`
+ALTER TABLE `materias`
   MODIFY `id_materia` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -2542,9 +2528,9 @@ ALTER TABLE `municipios`
   MODIFY `id_municipio` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=463;
 
 --
--- AUTO_INCREMENT de la tabla `nota`
+-- AUTO_INCREMENT de la tabla `notas`
 --
-ALTER TABLE `nota`
+ALTER TABLE `notas`
   MODIFY `id_nota` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -2554,21 +2540,21 @@ ALTER TABLE `parroquias`
   MODIFY `id_parroquia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1139;
 
 --
--- AUTO_INCREMENT de la tabla `periodo`
+-- AUTO_INCREMENT de la tabla `periodos`
 --
-ALTER TABLE `periodo`
+ALTER TABLE `periodos`
   MODIFY `id_periodo` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `seccion`
+-- AUTO_INCREMENT de la tabla `secciones`
 --
-ALTER TABLE `seccion`
+ALTER TABLE `secciones`
   MODIFY `id_seccion` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT de la tabla `usuario`
+-- AUTO_INCREMENT de la tabla `usuarios`
 --
-ALTER TABLE `usuario`
+ALTER TABLE `usuarios`
   MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
 
 --
@@ -2576,17 +2562,17 @@ ALTER TABLE `usuario`
 --
 
 --
--- Filtros para la tabla `actividad`
+-- Filtros para la tabla `actividades`
 --
-ALTER TABLE `actividad`
-  ADD CONSTRAINT `actividad_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `actividad_ibfk_2` FOREIGN KEY (`id_curso`) REFERENCES `curso` (`id_curso`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `actividades`
+  ADD CONSTRAINT `actividades_ibfk_1` FOREIGN KEY (`id_curso`) REFERENCES `cursos` (`id_curso`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `actividades_ibfk_2` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `admin`
 --
 ALTER TABLE `admin`
-  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `admin_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `ciudades`
@@ -2595,63 +2581,56 @@ ALTER TABLE `ciudades`
   ADD CONSTRAINT `ciudades_ibfk_1` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `comentario`
+-- Filtros para la tabla `comentarios`
 --
-ALTER TABLE `comentario`
-  ADD CONSTRAINT `comentario_ibfk_1` FOREIGN KEY (`id_docente`) REFERENCES `docente` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `comentario_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `comentarios`
+  ADD CONSTRAINT `comentarios_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comentarios_ibfk_2` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `comprobante`
+-- Filtros para la tabla `comprobantes`
 --
-ALTER TABLE `comprobante`
-  ADD CONSTRAINT `comprobante_ibfk_1` FOREIGN KEY (`id_nota`) REFERENCES `nota` (`id_nota`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `comprobante_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `comprobantes`
+  ADD CONSTRAINT `comprobantes_ibfk_1` FOREIGN KEY (`id_nota`) REFERENCES `notas` (`id_nota`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comprobantes_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `curso`
+-- Filtros para la tabla `cursos`
 --
-ALTER TABLE `curso`
-  ADD CONSTRAINT `curso_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `curso_ibfk_2` FOREIGN KEY (`id_docente`) REFERENCES `docente` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `curso_ibfk_3` FOREIGN KEY (`id_periodo`) REFERENCES `periodo` (`id_periodo`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `cursos`
+  ADD CONSTRAINT `cursos_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cursos_ibfk_2` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cursos_ibfk_3` FOREIGN KEY (`id_periodo`) REFERENCES `periodos` (`id_periodo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `direcciones`
 --
 ALTER TABLE `direcciones`
-  ADD CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `direcciones_ibfk_2` FOREIGN KEY (`id_ciudad`) REFERENCES `ciudades` (`id_ciudad`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `direcciones_ibfk_3` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `direcciones_ibfk_4` FOREIGN KEY (`id_parroquia`) REFERENCES `parroquias` (`id_parroquia`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_ciudad`) REFERENCES `ciudades` (`id_ciudad`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `direcciones_ibfk_2` FOREIGN KEY (`id_parroquia`) REFERENCES `parroquias` (`id_parroquia`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `direcciones_ibfk_3` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `direcciones_ibfk_4` FOREIGN KEY (`id_municipio`) REFERENCES `municipios` (`id_municipio`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `direcciones_estudiante`
+-- Filtros para la tabla `docentes`
 --
-ALTER TABLE `direcciones_estudiante`
-  ADD CONSTRAINT `direcciones_estudiante_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `direcciones_estudiante_ibfk_2` FOREIGN KEY (`id_direccion`) REFERENCES `direcciones` (`id_direccion`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `docentes`
+  ADD CONSTRAINT `docentes_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `docente`
+-- Filtros para la tabla `estudiantes`
 --
-ALTER TABLE `docente`
-  ADD CONSTRAINT `docente_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `estudiantes`
+  ADD CONSTRAINT `estudiantes_ibfk_1` FOREIGN KEY (`id_direccion`) REFERENCES `direcciones` (`id_direccion`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `estudiantes_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `estudiante`
+-- Filtros para la tabla `materias`
 --
-ALTER TABLE `estudiante`
-  ADD CONSTRAINT `estudiante_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `estudiante_ibfk_2` FOREIGN KEY (`id_direccion`) REFERENCES `direcciones` (`id_direccion`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `materia`
---
-ALTER TABLE `materia`
-  ADD CONSTRAINT `materia_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `materia_ibfk_2` FOREIGN KEY (`id_docente`) REFERENCES `docente` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `materia_ibfk_3` FOREIGN KEY (`id_periodo`) REFERENCES `periodo` (`id_periodo`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `materias`
+  ADD CONSTRAINT `materias_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `materias_ibfk_2` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `materias_ibfk_3` FOREIGN KEY (`id_periodo`) REFERENCES `periodos` (`id_periodo`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `municipios`
@@ -2660,12 +2639,13 @@ ALTER TABLE `municipios`
   ADD CONSTRAINT `municipios_ibfk_1` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `nota`
+-- Filtros para la tabla `notas`
 --
-ALTER TABLE `nota`
-  ADD CONSTRAINT `nota_ibfk_1` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `nota_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `nota_ibfk_3` FOREIGN KEY (`id_curso`) REFERENCES `curso` (`id_curso`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `notas`
+  ADD CONSTRAINT `notas_ibfk_1` FOREIGN KEY (`id_estudiantes`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notas_ibfk_2` FOREIGN KEY (`id_curso`) REFERENCES `cursos` (`id_curso`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notas_ibfk_3` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notas_ibfk_4` FOREIGN KEY (`id_actividad`) REFERENCES `actividades` (`id_actividad`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `parroquias`
@@ -2674,12 +2654,12 @@ ALTER TABLE `parroquias`
   ADD CONSTRAINT `parroquias_ibfk_1` FOREIGN KEY (`id_municipio`) REFERENCES `municipios` (`id_municipio`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
--- Filtros para la tabla `seccion`
+-- Filtros para la tabla `secciones`
 --
-ALTER TABLE `seccion`
-  ADD CONSTRAINT `seccion_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiante` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `seccion_ibfk_2` FOREIGN KEY (`id_curso`) REFERENCES `curso` (`id_curso`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `seccion_ibfk_3` FOREIGN KEY (`id_materia`) REFERENCES `materia` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE `secciones`
+  ADD CONSTRAINT `secciones_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `secciones_ibfk_2` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `secciones_ibfk_3` FOREIGN KEY (`id_curso`) REFERENCES `cursos` (`id_curso`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
