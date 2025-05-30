@@ -1,0 +1,111 @@
+:root{
+    --morado:#72147E;
+    --fondo:#121212;
+    --negro:#000;
+    --blanco:#fff;
+    --enlace:#4300FF; 
+    --fuente:'playfair display', 'poppins';
+}
+html{
+    box-sizing: border-box;
+}
+
+*,*::after, *::before{
+    box-sizing: inherit;
+}
+
+body{
+    font-family: var(--fuente);
+    background-color: var(--fondo);
+    display: flex;
+    align-items: center;
+    height: 100vh;
+}
+
+.contenedor{
+    margin: 0 auto;
+    max-width: 1200px;
+    width: 95%;
+}
+
+.imagen-formulario{
+    background-image: url('../img/login.jpeg');
+    background-position: center center;
+    background-size: cover;
+    height: 200px;
+    flex: 0 0 calc(60%);
+    position: relative;
+    
+}
+
+.formulario{
+    padding: 50px;
+    background-color: var(--morado); 
+}
+.texto-formulario h2, .input label, .password-olvidada a, .texto-formulario p{
+    color: var(--blanco);
+}
+.texto-formulario h2{
+    font-size: 40px;
+    text-align: center;
+}
+.texto-formulario p{
+    font-size: 22px;
+    text-align: center;
+}
+.input label{
+    display: block;
+    font-size: 22px;
+    font-weight: bold;
+    margin: 20px 0;
+}
+.password-olvidada a{
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 22px;
+}
+.input input{
+    width: 80%;
+    padding: 10px 15px;
+    border-radius: 5px;
+    outline: none;
+}
+.input select{
+    width: 12%;
+    border-radius: 3px;
+    padding: 8px 2px;
+    outline: none;
+}
+.input input[type="submit"]{
+    background-color: var(--negro);
+    color: var(--blanco);
+    font-size: 22px;
+    font-weight: bold;
+    border: none;
+    margin-top: 30px;
+    transition: background-color .3s ease-in-out;
+}
+.input input[type="submit"]:hover{
+    cursor: pointer;
+    color: #000;
+    background-color: #FFCFEF;
+}
+
+@media(min-width:768px){
+    .imagen-formulario{
+        height: auto;
+        background-position: right;
+    }
+
+}
+@media(min-width:1200px){
+    .imagen-formulario{
+        background-position: center;
+    }
+}
+
+@media(min-width:768px){
+    .contenedor-formulario{
+        display: flex;
+    }
+}
