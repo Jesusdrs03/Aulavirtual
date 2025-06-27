@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-05-2025 a las 05:56:40
+-- Tiempo de generación: 13-06-2025 a las 02:55:41
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -36,6 +36,13 @@ CREATE TABLE `actividades` (
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `actividades`
+--
+
+INSERT INTO `actividades` (`id_actividad`, `id_curso`, `id_materia`, `nombre`, `valor`, `status`) VALUES
+(1, 1, 1, 'ensayo', 20, 'activo');
+
 -- --------------------------------------------------------
 
 --
@@ -50,12 +57,19 @@ CREATE TABLE `admin` (
   `apellido1` varchar(180) NOT NULL,
   `apellido2` varchar(180) NOT NULL,
   `correo` varchar(250) NOT NULL,
-  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','cual fue tu primera mascota','en que ciudad se conocieron tus padres') NOT NULL,
+  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','en que ciudad se conocieron tus padres','cual es el nombre de tu mascota') NOT NULL,
   `rp1` varchar(100) NOT NULL,
-  `p2` enum('que lugar te gustaria conocer','cual fue tu primer vehiculo','cual es tu pasatiempo favorito','cual es tu pelicula favorita') NOT NULL,
+  `p2` enum('cual es tu pasatiempo favorito','que pais te gustaria conocer','cual es tu postre favorito','cual fue tu primer vehiculo') NOT NULL,
   `rp2` varchar(100) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `admin`
+--
+
+INSERT INTO `admin` (`id_admin`, `id_usuario`, `nombre1`, `nombre2`, `apellido1`, `apellido2`, `correo`, `p1`, `rp1`, `p2`, `rp2`, `status`) VALUES
+(1, 1, 'fannys', 'rodsinys', 'peroza', 'bentacourt', 'fannysperoza@gmail.com ', 'cual es el nombre de tu mama', 'carmen', 'cual fue tu primer vehiculo', 'corola', 'activo');
 
 -- --------------------------------------------------------
 
@@ -589,6 +603,13 @@ CREATE TABLE `comentarios` (
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `comentarios`
+--
+
+INSERT INTO `comentarios` (`id_comentario`, `id_docente`, `id_estudiante`, `fecha`, `descripcion`, `status`) VALUES
+(1, 1, 1, '2025-06-10', 'sdfsdfghjk', 'activo');
+
 -- --------------------------------------------------------
 
 --
@@ -619,6 +640,13 @@ CREATE TABLE `cursos` (
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `cursos`
+--
+
+INSERT INTO `cursos` (`id_curso`, `id_docente`, `id_estudiante`, `id_periodo`, `nombre`, `codigo`, `status`) VALUES
+(1, 1, 1, 1, 'python ', 'RK6LD73', 'activo');
+
 -- --------------------------------------------------------
 
 --
@@ -635,6 +663,13 @@ CREATE TABLE `direcciones` (
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `direcciones`
+--
+
+INSERT INTO `direcciones` (`id_direccion`, `id_estado`, `id_municipio`, `id_ciudad`, `id_parroquia`, `descripcion`, `status`) VALUES
+(1, 12, 146, 212, 229, 'ruezga sur sector 6 ', 'activo');
+
 -- --------------------------------------------------------
 
 --
@@ -648,13 +683,21 @@ CREATE TABLE `docentes` (
   `nombre2` varchar(150) NOT NULL,
   `apellido1` varchar(180) NOT NULL,
   `apellido2` varchar(180) NOT NULL,
+  `telefono` varchar(15) NOT NULL,
   `correo` varchar(250) NOT NULL,
-  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','cual fue tu primera mascota','en que ciudad se conocieron tus padres') NOT NULL,
+  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','en que ciudad se conocieron tus padres','cual es el nombre de tu mascota') NOT NULL,
   `rp1` varchar(100) NOT NULL,
-  `p2` enum('que lugar te gustaria conocer','cual fue tu primer vehiculo','cual es tu pasatiempo favorito','cual es tu pelicula favorita') NOT NULL,
+  `p2` enum('cual es tu pasatiempo favorito','que pais te gustaria conocer','cual es tu postre favorito','cual fue tu primer vehiculo') NOT NULL,
   `rp2` varchar(100) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `docentes`
+--
+
+INSERT INTO `docentes` (`id_docente`, `id_usuario`, `nombre1`, `nombre2`, `apellido1`, `apellido2`, `telefono`, `correo`, `p1`, `rp1`, `p2`, `rp2`, `status`) VALUES
+(1, 1, 'valeria ', 'valentina', 'garcia', 'mendoza', '04122569890', 'valentinag26@gmail.com', 'cual es el nombre de tu papa', 'andres', 'que pais te gustaria conocer', 'venezuela', 'activo');
 
 -- --------------------------------------------------------
 
@@ -712,17 +755,26 @@ CREATE TABLE `estudiantes` (
   `nombre1` varchar(150) NOT NULL,
   `nombre2` varchar(150) NOT NULL,
   `apellido1` varchar(180) NOT NULL,
-  `apellido2` varchar(180) NOT NULL,
+  `apellido` varchar(180) NOT NULL,
+  `fecha_nac` date NOT NULL,
   `sexo` enum('masculino','femenino') NOT NULL,
-  `fecha_nacimiento` date NOT NULL,
-  `numero_documento` varchar(8) NOT NULL,
+  `tipo_doc` enum('V','J','E') NOT NULL,
+  `num_doc` varchar(8) NOT NULL,
   `correo` varchar(250) NOT NULL,
-  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','cual fue tu primera mascota','en que ciudad se conocieron tus padres') NOT NULL,
-  `rp1` varchar(250) NOT NULL,
-  `p2` enum('que lugar te gustaria conocer','cual fue tu primer vehiculo','cual es tu pasatiempo favorito','cual es tu peliculafavorita') NOT NULL,
-  `rp2` varchar(250) NOT NULL,
+  `telefono` varchar(15) NOT NULL,
+  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','en que ciudad se conocieron tus padres','cual es el nombre de tu mascota') NOT NULL,
+  `rp1` varchar(100) NOT NULL,
+  `p2` enum('cual es tu pasatiempo favorito','que pais te gustria conocer','cual es tu postre favorito','cual fue tu primer vehiculo') NOT NULL,
+  `rp2` varchar(100) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `estudiantes`
+--
+
+INSERT INTO `estudiantes` (`id_estudiante`, `id_usuario`, `id_direccion`, `nombre1`, `nombre2`, `apellido1`, `apellido`, `fecha_nac`, `sexo`, `tipo_doc`, `num_doc`, `correo`, `telefono`, `p1`, `rp1`, `p2`, `rp2`, `status`) VALUES
+(1, 1, 1, 'maria', 'gabriela', 'alvarado', 'vargas', '2003-06-22', 'femenino', 'V', '30014146', 'mariagabriela14@gmail.com', '04149506148', 'cual es el nombre de tu papa', 'ramon', 'cual es tu postre favorito', 'torta', 'activo');
 
 -- --------------------------------------------------------
 
@@ -739,6 +791,13 @@ CREATE TABLE `materias` (
   `codigo` varchar(20) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `materias`
+--
+
+INSERT INTO `materias` (`id_materia`, `id_estudiante`, `id_docente`, `id_periodo`, `nombre`, `codigo`, `status`) VALUES
+(1, 1, 1, 1, 'toma de decisiones ', 'ENT-31133', 'activo');
 
 -- --------------------------------------------------------
 
@@ -1109,6 +1168,13 @@ CREATE TABLE `notas` (
   `fecha` date NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `notas`
+--
+
+INSERT INTO `notas` (`id_nota`, `id_estudiantes`, `id_curso`, `id_materia`, `id_actividad`, `valor`, `fecha`, `status`) VALUES
+(1, 1, 1, 1, 1, 20, '2025-06-10', 'activo');
 
 -- --------------------------------------------------------
 
@@ -2275,10 +2341,17 @@ INSERT INTO `parroquias` (`id_parroquia`, `id_municipio`, `parroquia`) VALUES
 CREATE TABLE `periodos` (
   `id_periodo` int(11) NOT NULL,
   `inicio` date NOT NULL,
-  `fin` int(11) NOT NULL,
-  `descripcion` int(250) NOT NULL,
+  `fin` date NOT NULL,
+  `descripcion` varchar(250) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `periodos`
+--
+
+INSERT INTO `periodos` (`id_periodo`, `inicio`, `fin`, `descripcion`, `status`) VALUES
+(1, '2024-10-07', '2025-06-30', '2-2024', 'activo');
 
 -- --------------------------------------------------------
 
@@ -2296,6 +2369,13 @@ CREATE TABLE `secciones` (
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `secciones`
+--
+
+INSERT INTO `secciones` (`id_seccion`, `id_estudiante`, `id_materia`, `id_curso`, `codigo`, `nombre`, `status`) VALUES
+(1, 1, 1, 1, 'ENT-31133', 'toma decisiones ', 'activo');
+
 -- --------------------------------------------------------
 
 --
@@ -2308,12 +2388,19 @@ CREATE TABLE `usuarios` (
   `password` varchar(34) NOT NULL,
   `correo` varchar(250) NOT NULL,
   `nivel` enum('estudiante','docente','admin') NOT NULL,
-  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','cual fue tu primera mascota','en que ciudad se conocieron tus padres') NOT NULL,
+  `p1` enum('cual es el nombre de tu mama','cual es el nombre de tu papa','en que ciudad se conocieron tus padres','cual es el nombre de tu mascota') NOT NULL,
   `rp1` varchar(100) NOT NULL,
-  `p2` enum('que lugar te gustaria conocer','cual fue tu primer vehiculo','cual es tu pasatiempo favorito','cual es tu pelicula favorita') NOT NULL,
+  `p2` enum('cual es tu pasatiempo favorito','que pais te gustaria conocer','cual es tu postre favorito','cual fue tu primer vehiculo') NOT NULL,
   `rp2` varchar(100) NOT NULL,
   `status` enum('activo','inactivo') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `usuario`, `password`, `correo`, `nivel`, `p1`, `rp1`, `p2`, `rp2`, `status`) VALUES
+(1, 'anderson', '30529325', 'andersong30529325@gmail.com', 'admin', 'cual es el nombre de tu mama', 'fannys', 'cual es tu pasatiempo favorito', 'estudiar', 'activo');
 
 --
 -- Índices para tablas volcadas
@@ -2459,13 +2546,13 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de la tabla `actividades`
 --
 ALTER TABLE `actividades`
-  MODIFY `id_actividad` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_actividad` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `admin`
 --
 ALTER TABLE `admin`
-  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_admin` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `ciudades`
@@ -2477,7 +2564,7 @@ ALTER TABLE `ciudades`
 -- AUTO_INCREMENT de la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
-  MODIFY `id_comentario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_comentario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `comprobantes`
@@ -2489,19 +2576,19 @@ ALTER TABLE `comprobantes`
 -- AUTO_INCREMENT de la tabla `cursos`
 --
 ALTER TABLE `cursos`
-  MODIFY `id_curso` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_curso` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `direcciones`
 --
 ALTER TABLE `direcciones`
-  MODIFY `id_direccion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_direccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `docentes`
 --
 ALTER TABLE `docentes`
-  MODIFY `id_docente` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_docente` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `estados`
@@ -2513,13 +2600,13 @@ ALTER TABLE `estados`
 -- AUTO_INCREMENT de la tabla `estudiantes`
 --
 ALTER TABLE `estudiantes`
-  MODIFY `id_estudiante` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_estudiante` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `materias`
 --
 ALTER TABLE `materias`
-  MODIFY `id_materia` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_materia` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `municipios`
@@ -2531,7 +2618,7 @@ ALTER TABLE `municipios`
 -- AUTO_INCREMENT de la tabla `notas`
 --
 ALTER TABLE `notas`
-  MODIFY `id_nota` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_nota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `parroquias`
@@ -2543,19 +2630,19 @@ ALTER TABLE `parroquias`
 -- AUTO_INCREMENT de la tabla `periodos`
 --
 ALTER TABLE `periodos`
-  MODIFY `id_periodo` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_periodo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `secciones`
 --
 ALTER TABLE `secciones`
-  MODIFY `id_seccion` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_seccion` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Restricciones para tablas volcadas
@@ -2584,32 +2671,25 @@ ALTER TABLE `ciudades`
 -- Filtros para la tabla `comentarios`
 --
 ALTER TABLE `comentarios`
-  ADD CONSTRAINT `comentarios_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `comentarios_ibfk_2` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Filtros para la tabla `comprobantes`
---
-ALTER TABLE `comprobantes`
-  ADD CONSTRAINT `comprobantes_ibfk_1` FOREIGN KEY (`id_nota`) REFERENCES `notas` (`id_nota`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `comprobantes_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `comentarios_ibfk_1` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `comentarios_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `cursos`
 --
 ALTER TABLE `cursos`
-  ADD CONSTRAINT `cursos_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `cursos_ibfk_2` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `cursos_ibfk_3` FOREIGN KEY (`id_periodo`) REFERENCES `periodos` (`id_periodo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `cursos_ibfk_1` FOREIGN KEY (`id_periodo`) REFERENCES `periodos` (`id_periodo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cursos_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cursos_ibfk_3` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `direcciones`
 --
 ALTER TABLE `direcciones`
-  ADD CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_ciudad`) REFERENCES `ciudades` (`id_ciudad`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `direcciones_ibfk_2` FOREIGN KEY (`id_parroquia`) REFERENCES `parroquias` (`id_parroquia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `direcciones_ibfk_3` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `direcciones_ibfk_4` FOREIGN KEY (`id_municipio`) REFERENCES `municipios` (`id_municipio`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `direcciones_ibfk_1` FOREIGN KEY (`id_estado`) REFERENCES `estados` (`id_estado`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `direcciones_ibfk_2` FOREIGN KEY (`id_municipio`) REFERENCES `municipios` (`id_municipio`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `direcciones_ibfk_3` FOREIGN KEY (`id_ciudad`) REFERENCES `ciudades` (`id_ciudad`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `direcciones_ibfk_4` FOREIGN KEY (`id_parroquia`) REFERENCES `parroquias` (`id_parroquia`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `docentes`
@@ -2621,16 +2701,16 @@ ALTER TABLE `docentes`
 -- Filtros para la tabla `estudiantes`
 --
 ALTER TABLE `estudiantes`
-  ADD CONSTRAINT `estudiantes_ibfk_1` FOREIGN KEY (`id_direccion`) REFERENCES `direcciones` (`id_direccion`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `estudiantes_ibfk_2` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `estudiantes_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id_usuario`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `estudiantes_ibfk_2` FOREIGN KEY (`id_direccion`) REFERENCES `direcciones` (`id_direccion`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `materias`
 --
 ALTER TABLE `materias`
-  ADD CONSTRAINT `materias_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `materias_ibfk_2` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `materias_ibfk_3` FOREIGN KEY (`id_periodo`) REFERENCES `periodos` (`id_periodo`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `materias_ibfk_1` FOREIGN KEY (`id_periodo`) REFERENCES `periodos` (`id_periodo`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `materias_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `materias_ibfk_3` FOREIGN KEY (`id_docente`) REFERENCES `docentes` (`id_docente`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `municipios`
@@ -2642,10 +2722,10 @@ ALTER TABLE `municipios`
 -- Filtros para la tabla `notas`
 --
 ALTER TABLE `notas`
-  ADD CONSTRAINT `notas_ibfk_1` FOREIGN KEY (`id_estudiantes`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notas_ibfk_1` FOREIGN KEY (`id_actividad`) REFERENCES `actividades` (`id_actividad`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `notas_ibfk_2` FOREIGN KEY (`id_curso`) REFERENCES `cursos` (`id_curso`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `notas_ibfk_3` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `notas_ibfk_4` FOREIGN KEY (`id_actividad`) REFERENCES `actividades` (`id_actividad`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `notas_ibfk_3` FOREIGN KEY (`id_estudiantes`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `notas_ibfk_4` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Filtros para la tabla `parroquias`
@@ -2657,9 +2737,9 @@ ALTER TABLE `parroquias`
 -- Filtros para la tabla `secciones`
 --
 ALTER TABLE `secciones`
-  ADD CONSTRAINT `secciones_ibfk_1` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `secciones_ibfk_2` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `secciones_ibfk_3` FOREIGN KEY (`id_curso`) REFERENCES `cursos` (`id_curso`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `secciones_ibfk_1` FOREIGN KEY (`id_curso`) REFERENCES `cursos` (`id_curso`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `secciones_ibfk_2` FOREIGN KEY (`id_estudiante`) REFERENCES `estudiantes` (`id_estudiante`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `secciones_ibfk_3` FOREIGN KEY (`id_materia`) REFERENCES `materias` (`id_materia`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
